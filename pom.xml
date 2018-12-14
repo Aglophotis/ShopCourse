@@ -1,0 +1,14 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>ru.aglophotis.mirea.microservice</groupId>
+    <artifactId>root-weather</artifactId>
+    <version>1.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>balance-microservice</module>
+        <module>cartitem-microservice</module>
+        <module>currency-microservice</module>
+        <module>item-microservice</module>
+    </modules>
+</project>
