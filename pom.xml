@@ -10,5 +10,6 @@
         <module>cartitem-microservice</module>
         <module>currency-microservice</module>
         <module>item-microservice</module>
+        <module>router-microservice</module>
     </modules>
 </project>
