@@ -1,9 +1,9 @@
-package ru.aglophotis.mirea.microservice.balance.shop.utils;
+package ru.aglophotis.mirea.microservice.identity.shop.utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import ru.aglophotis.mirea.microservice.balance.shop.entities.Balance;
+import ru.aglophotis.mirea.microservice.identity.shop.entities.User;
 
 public class HibernateSessionFactoryUtil {
     private static SessionFactory sessionFactory;
@@ -16,7 +16,7 @@ public class HibernateSessionFactoryUtil {
             try {
                 Configuration configuration = new Configuration();
                 configuration.configure("hibernate.cfg.xml");
-                configuration.addAnnotatedClass(Balance.class);
+                configuration.addAnnotatedClass(User.class);
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
             } catch (Exception e) {
