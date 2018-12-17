@@ -3,7 +3,6 @@ package ru.aglophotis.mirea.microservice.item.shop.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,12 +21,6 @@ public class StuffController {
     @ResponseBody
     public List<Item> getStuffs(){
         return stuffService.getStuffs();
-    }
-
-    @RequestMapping(value="/stuff/{id}", method=RequestMethod.GET)
-    @ResponseBody
-    public Item getStuff(@PathVariable("id") int id){
-        return stuffService.getStuff(id);
     }
 
 }

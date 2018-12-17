@@ -24,10 +24,13 @@ public class CartDao {
 
     public int deleteById(int cartItemId, int authorId) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            return (Integer) session.createQuery("delete from CartItem where authorId = :authorId and id = :cartItemId")
+            session.getTransaction().begin();
+            int id = session.createQuery("delete from CartItem where authorId = :authorId and id = :cartItemId")
                     .setParameter("authorId", authorId)
                     .setParameter("cartItemId", cartItemId)
-                    .uniqueResult();
+                    .executeUpdate();
+            session.getTransaction().commit();
+            return id;
         }
     }
 
