@@ -1,5 +1,6 @@
 package ru.aglophotis.mirea.microservice.identity.shop.dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import ru.aglophotis.mirea.microservice.identity.shop.data.DatabaseContract;
 import ru.aglophotis.mirea.microservice.identity.shop.entities.User;
@@ -26,6 +27,8 @@ public class UserDao {
             int id = (int) session.save(item);
             session.getTransaction().commit();
             return id;
+        } catch (HibernateException e) {
+            return -1;
         }
     }
 

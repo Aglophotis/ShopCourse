@@ -31,7 +31,7 @@ public class UserController {
         if (userService.addUser(user) != -1) {
             return "User successfully added";
         } else {
-            return "Error";
+            return "A user with this login already exists";
         }
     }
 }
