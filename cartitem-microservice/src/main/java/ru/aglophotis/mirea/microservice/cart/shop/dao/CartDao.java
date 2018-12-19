@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartDao {
-    public CartItem getById(int id) {
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            return session.get(CartItem.class, id);
-        }
-    }
 
     public List<CartItem> getAll(int authorId) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
@@ -34,9 +29,11 @@ public class CartDao {
         }
     }
 
-    public List<CartItem> getAllDistinct() {
+    public List<CartItem> getAllDistinct(int authorId) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            List<CartItem> list = session.createQuery("from CartItem").list();
+            List<CartItem> list = session.createQuery("from CartItem where authorId = :id")
+                    .setParameter("id", authorId)
+                    .list();
             ArrayList<CartItem> resultList = new ArrayList<>();
             for (CartItem item : list) {
                 boolean isContains = false;
@@ -73,10 +70,12 @@ public class CartDao {
         }
     }
 
-    public void deleteAll() {
+    public void deleteAll(int authorId) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             session.getTransaction().begin();
-            session.createQuery("DELETE FROM CartItem").executeUpdate();
+            session.createQuery("DELETE FROM CartItem where authorId = :authorId")
+                    .setParameter("authorId", authorId)
+                    .executeUpdate();
             session.getTransaction().commit();
         }
     }
