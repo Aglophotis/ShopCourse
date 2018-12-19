@@ -7,7 +7,7 @@
 
     <modules>
         <module>balance-microservice</module>
-        <module>cartitem-microservice</module>
+        <module>cart-microservice</module>
         <module>currency-microservice</module>
         <module>item-microservice</module>
         <module>router-microservice</module>
