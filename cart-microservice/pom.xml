@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.aglophotis.mirea.microservice.balance</groupId>
-    <artifactId>balance-microservice</artifactId>
+    <groupId>ru.aglophotis.mirea.microservice.cart</groupId>
+    <artifactId>cart-microservice</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>ru.aglophotis.mirea.microservice.balance.CustomApplication</mainClass>
+                    <mainClass>ru.aglophotis.mirea.microservice.cart.CustomApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>
