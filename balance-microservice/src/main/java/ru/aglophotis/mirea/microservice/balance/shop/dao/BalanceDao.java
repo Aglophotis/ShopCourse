@@ -17,16 +17,17 @@ public class BalanceDao {
         }
     }
 
-    public void updateById(double balance, int currencyId, int authorId) {
+    public int updateById(double balance, int currencyId, int authorId) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction t = session.beginTransaction();
-            session
+            int id = session
                     .createQuery("update Balance set balance = :balance where authorId = :authorId and currencyId = :currencyId")
                     .setParameter("authorId", authorId)
                     .setParameter("balance", balance)
                     .setParameter("currencyId", currencyId)
                     .executeUpdate();
             t.commit();
+            return id;
         }
     }
 

@@ -15,6 +15,15 @@ public class UserDao {
         }
     }
 
+    public User getUserByLogin(String login) {
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            User userDB = (User)session.createQuery("from User where login = :login")
+                    .setParameter("login", login)
+                    .uniqueResult();
+            return userDB;
+        }
+    }
+
     public List<User> getAll() {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             return session.createQuery("from User").list();
@@ -48,11 +57,15 @@ public class UserDao {
         }
     }
 
-    public void update(User item) {
+    public Integer updateToken(User user) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             session.getTransaction().begin();
-            session.update(item);
+            int id = session.createQuery("UPDATE User set token = :token where login = :login")
+                    .setParameter("token", user.getToken())
+                    .setParameter("login", user.getLogin())
+                    .executeUpdate();
             session.getTransaction().commit();
+            return id;
         }
     }
 }

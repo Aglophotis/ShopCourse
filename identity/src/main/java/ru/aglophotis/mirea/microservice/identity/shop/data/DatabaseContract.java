@@ -7,4 +7,5 @@ public interface DatabaseContract {
     String COLUMN_LOGIN = "login";
     String COLUMN_PASSWORD = "password";
     String COLUMN_ROLE = "role";
+    String COLUMN_TOKEN = "token";
 }

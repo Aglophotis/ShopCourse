@@ -1,4 +1,4 @@
-package ru.aglophotis.mirea.microservice.identity.shop;
+package ru.aglophotis.mirea.microservice.authorization;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,28 +1,10 @@
-package ru.aglophotis.mirea.microservice.identity.shop.entities;
+package ru.aglophotis.mirea.microservice.authorization.entities;
 
-import ru.aglophotis.mirea.microservice.identity.shop.data.DatabaseContract;
-
-import javax.persistence.*;
-
-@Entity
-@Table(name = DatabaseContract.TABLE_NAME)
 public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = DatabaseContract.COLUMN_ID)
     private int id;
-
-    @Column(name = DatabaseContract.COLUMN_LOGIN, unique = true)
     private String login;
-
-    @Column(name = DatabaseContract.COLUMN_PASSWORD)
     private String password;
-
-    @Column(name = DatabaseContract.COLUMN_ROLE)
     private String role;
-
-    @Column(name = DatabaseContract.COLUMN_TOKEN)
     private String token;
 
     public User(String login, String password, String role, String token) {

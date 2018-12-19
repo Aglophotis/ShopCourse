@@ -12,5 +12,6 @@
         <module>item-microservice</module>
         <module>router-microservice</module>
         <module>identity</module>
+        <module>authorization</module>
     </modules>
 </project>
