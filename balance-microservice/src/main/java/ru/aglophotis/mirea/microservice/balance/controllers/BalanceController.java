@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.aglophotis.mirea.microservice.balance.entities.Balance;
 import ru.aglophotis.mirea.microservice.balance.services.BalanceService;
+import ru.aglophotis.mirea.microservice.balance.utils.TokenHelper;
 
 import java.util.List;
 
@@ -13,13 +14,17 @@ public class BalanceController {
 
     @Autowired
     private BalanceService balanceService;
+    private TokenHelper tokenHelper;
+
+    public BalanceController() {
+        tokenHelper = new TokenHelper();
+    }
 
     @RequestMapping(value = "/balance", method = RequestMethod.GET)
     @ResponseBody
     public List<Balance> getBalance(@RequestHeader(value = "Authorization", required = true) String token) {
-        String checkResult = balanceService.checkToken(token);
-        if (!checkResult.equals("Incorrect")) {
-            return balanceService.getBalance(Integer.parseInt(checkResult));
+        if (tokenHelper.checkToken(token)) {
+            return balanceService.getBalance(tokenHelper.getPayload(token).getSub());
         } else {
             return null;
         }
@@ -36,9 +41,8 @@ public class BalanceController {
     public String putBalance(@PathVariable("id") int id,
                              @PathVariable("value") double value,
                              @RequestHeader(value = "Authorization", required = true) String token) {
-        String checkResult = balanceService.checkToken(token);
-        if (!checkResult.equals("Incorrect")) {
-            return balanceService.increaseBalance(id, value, Integer.parseInt(checkResult));
+        if (tokenHelper.checkToken(token)) {
+            return balanceService.increaseBalance(id, value, tokenHelper.getPayload(token).getSub());
         } else {
             return "Please log in again";
         }
@@ -49,9 +53,8 @@ public class BalanceController {
     public String deleteBalance(@PathVariable("id") int id,
                                 @PathVariable("value") double value,
                                 @RequestHeader(value = "Authorization", required = true) String token) {
-        String checkResult = balanceService.checkToken(token);
-        if (!checkResult.equals("Incorrect")) {
-            return balanceService.decreaseBalance(id, value, Integer.parseInt(checkResult));
+        if (tokenHelper.checkToken(token)) {
+            return balanceService.decreaseBalance(id, value, tokenHelper.getPayload(token).getSub());
         } else {
             return "Please log in again";
         }
@@ -62,9 +65,8 @@ public class BalanceController {
     public String setBalance(@PathVariable("id") int id,
                              @PathVariable("value") double value,
                              @RequestHeader(value = "Authorization", required = true) String token) {
-        String checkResult = balanceService.checkToken(token);
-        if (!checkResult.equals("Incorrect")) {
-            return balanceService.setBalance(id, value, Integer.parseInt(checkResult));
+        if (tokenHelper.checkToken(token)) {
+            return balanceService.setBalance(id, value, tokenHelper.getPayload(token).getSub());
         } else {
             return "Please log in again";
         }

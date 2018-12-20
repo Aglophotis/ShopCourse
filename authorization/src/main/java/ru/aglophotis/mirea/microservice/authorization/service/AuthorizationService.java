@@ -1,6 +1,5 @@
 package ru.aglophotis.mirea.microservice.authorization.service;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -8,11 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.aglophotis.mirea.microservice.authorization.entities.User;
-
-import java.nio.charset.Charset;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
+import ru.aglophotis.mirea.microservice.authorization.utils.TokenGenerator;
 
 @Service
 public class AuthorizationService {
@@ -43,27 +38,9 @@ public class AuthorizationService {
 
     private HttpHeaders createHeaders(String username, String role) {
         HttpHeaders headers = new HttpHeaders();
+        TokenGenerator tokenGenerator = new TokenGenerator();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Authorization", createToken(username, role));
+        headers.add("Authorization", tokenGenerator.getToken(username, role));
         return headers;
-    }
-
-    private String createToken(String username, String role) {
-        StringBuilder auth = new StringBuilder();
-        String uuid = UUID.randomUUID().toString();
-        auth.append(uuid);
-        auth.append(":");
-        auth.append(username);
-        auth.append(":");
-        auth.append(role);
-        auth.append(":");
-        auth.append(new Date().getTime());
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 10);
-        auth.append(":");
-        auth.append(calendar.getTime().getTime());
-        byte[] encodedAuth = Base64.encodeBase64(
-                auth.toString().getBytes(Charset.forName("US-ASCII")));
-        return new String(encodedAuth);
     }
 }

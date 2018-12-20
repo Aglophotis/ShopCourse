@@ -1,7 +1,6 @@
 package ru.aglophotis.mirea.microservice.balance.services;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,8 +9,6 @@ import ru.aglophotis.mirea.microservice.balance.dao.BalanceDao;
 import ru.aglophotis.mirea.microservice.balance.entities.Balance;
 import ru.aglophotis.mirea.microservice.balance.entities.Currency;
 
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -93,28 +90,5 @@ public class BalanceService {
         balance.setBalance(balance.getBalance() - value);
         balanceDao.update(balance);
         return "Balance successfully updated";
-    }
-
-    public String checkToken(String token) {
-        String decodedToken = decodeToken(token);
-        String[] parseToken = decodedToken.split(":");
-        Long timeLive = Long.parseLong(parseToken[5]);
-        if (timeLive < new Date().getTime()) {
-            return "Incorrect";
-        } else {
-            RestTemplate restTemplate = new RestTemplate();
-            HttpEntity<String> request = new HttpEntity<>(token);
-            ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8083/token", request, String.class);
-            if (response.getBody().equals("Incorrect token")) {
-                return "Incorrect";
-            } else {
-                return parseToken[2];
-            }
-        }
-    }
-
-    private String decodeToken(String token) {
-        String decodedToken = new String(Base64.getDecoder().decode(token));
-        return decodedToken;
     }
 }
