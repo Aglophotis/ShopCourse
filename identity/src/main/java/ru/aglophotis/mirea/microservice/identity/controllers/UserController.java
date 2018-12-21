@@ -30,15 +30,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/user/token", method = RequestMethod.POST, consumes = {"application/json"})
+    @RequestMapping(value = "/getUser", method = RequestMethod.POST)
     @ResponseBody
-    public String setToken(@RequestBody User user) {
-        return userService.setToken(user);
-    }
-
-    @RequestMapping(value = "/token", method = RequestMethod.POST)
-    @ResponseBody
-    public String checkToken(@RequestBody String token) {
-        return userService.checkToken(token);
+    public User getUser(@RequestBody String username) {
+        return userService.getUserByLogin(username);
     }
 }

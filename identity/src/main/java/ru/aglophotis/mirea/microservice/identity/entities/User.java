@@ -22,14 +22,10 @@ public class User {
     @Column(name = DatabaseContract.COLUMN_ROLE)
     private String role;
 
-    @Column(name = DatabaseContract.COLUMN_TOKEN)
-    private String token;
-
-    public User(String login, String password, String role, String token) {
+    public User(String login, String password, String role) {
         this.login = login;
         this.password = password;
         this.role = role;
-        this.token = token;
     }
 
     public User() {
@@ -65,13 +61,5 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

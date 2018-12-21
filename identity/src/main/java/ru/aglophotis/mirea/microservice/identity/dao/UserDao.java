@@ -56,16 +56,4 @@ public class UserDao {
             session.getTransaction().commit();
         }
     }
-
-    public Integer updateToken(User user) {
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            session.getTransaction().begin();
-            int id = session.createQuery("UPDATE User set token = :token where login = :login")
-                    .setParameter("token", user.getToken())
-                    .setParameter("login", user.getLogin())
-                    .executeUpdate();
-            session.getTransaction().commit();
-            return id;
-        }
-    }
 }

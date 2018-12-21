@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 import ru.aglophotis.mirea.microservice.identity.dao.UserDao;
 import ru.aglophotis.mirea.microservice.identity.entities.User;
 
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -60,32 +59,9 @@ public class UserService {
         return null;
     }
 
-    public String setToken(User user) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        User userDb = userDao.getUserByLogin(user.getLogin());
-        if (userDb != null) {
-            if (bCryptPasswordEncoder.matches(user.getPassword(), userDb.getPassword())) {
-                if (userDao.updateToken(user) == -1) {
-                    return "Error";
-                } else {
-                    return "Token update";
-                }
-            }
-        }
-        return "Error";
-    }
-
-    public String checkToken(String token) {
-        String encodedToken = new String(Base64.getDecoder().decode(token));
-        String[] parseToken = encodedToken.split(":");
-        User userDb = userDao.getUserByLogin(parseToken[1]);
-        if (userDb == null) {
-            return "Incorrect token";
-        }
-        if (userDb.getToken().equals(token)) {
-            return "Token is correct";
-        } else {
-            return "Incorrect token";
-        }
+    public User getUserByLogin(String username) {
+        User user = userDao.getUserByLogin(username);
+        user.setPassword(null);
+        return user;
     }
 }

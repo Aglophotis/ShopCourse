@@ -18,29 +18,20 @@ public class AuthorizationService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<User> request = new HttpEntity<>(user, headers);
         ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8083/user", request, String.class);
-        if (response.getBody().equals("Incorrect login")) {
-            return "Incorrect login";
-        } else if (response.getBody().equals("Incorrect password")) {
-            return "Incorrect password";
+        if (response == null) {
+            return "Connection error";
+        } else if (response.getBody().equals("Incorrect login") || response.getBody().equals("Incorrect password")) {
+            return response.getBody();
         } else {
-            headers = createHeaders(user.getLogin(), response.getBody());
-            String token = headers.get("Authorization").get(0);
-            user.setToken(token);
-            request = new HttpEntity<>(user, headers);
-            response = restTemplate.postForEntity("http://localhost:8083/user/token", request, String.class);
-            if (response.getBody().equals("Token update")) {
-                return token;
-            } else {
-                return "Error";
-            }
+            return new TokenGenerator().getToken(user.getLogin(), response.getBody());
         }
     }
 
-    private HttpHeaders createHeaders(String username, String role) {
-        HttpHeaders headers = new HttpHeaders();
-        TokenGenerator tokenGenerator = new TokenGenerator();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.add("Authorization", tokenGenerator.getToken(username, role));
-        return headers;
-    }
+//    private HttpHeaders createHeaders(String username, String role) {
+//        HttpHeaders headers = new HttpHeaders();
+//        TokenGenerator tokenGenerator = new TokenGenerator();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.add("Authorization", tokenGenerator.getToken(username, role));
+//        return headers;
+//    }
 }
