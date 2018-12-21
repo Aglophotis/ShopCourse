@@ -23,11 +23,7 @@ public class BalanceController {
     @RequestMapping(value = "/balance", method = RequestMethod.GET)
     @ResponseBody
     public List<Balance> getBalance(@RequestHeader(value = "Authorization", required = true) String token) {
-//        if (tokenUtils.validateToken(token)) {
-            return balanceService.getBalance(tokenUtils.getPayload(token).getSub());
-//        } else {
-//            return null;
-//        }
+        return balanceService.getBalance(tokenUtils.getPayload(token).getSub());
     }
 
     @RequestMapping(value = "/balance", method = RequestMethod.POST)
@@ -41,11 +37,7 @@ public class BalanceController {
     public String putBalance(@PathVariable("id") int id,
                              @PathVariable("value") double value,
                              @RequestHeader(value = "Authorization", required = true) String token) {
-//        if (tokenUtils.validateToken(token)) {
-            return balanceService.increaseBalance(id, value, tokenUtils.getPayload(token).getSub());
-//        } else {
-//            return "Please log in again";
-//        }
+        return balanceService.increaseBalance(id, value, tokenUtils.getPayload(token).getSub());
     }
 
     @RequestMapping(value = "/currency/{id}/balance/{value}", method = RequestMethod.DELETE)
@@ -53,11 +45,7 @@ public class BalanceController {
     public String deleteBalance(@PathVariable("id") int id,
                                 @PathVariable("value") double value,
                                 @RequestHeader(value = "Authorization", required = true) String token) {
-//        if (tokenUtils.validateToken(token)) {
-            return balanceService.decreaseBalance(id, value, tokenUtils.getPayload(token).getSub());
-//        } else {
-//            return "Please log in again";
-//        }
+        return balanceService.decreaseBalance(id, value, tokenUtils.getPayload(token).getSub());
     }
 
     @RequestMapping(value = "/currency/{id}/balance/{value}", method = RequestMethod.POST)
@@ -65,10 +53,6 @@ public class BalanceController {
     public String setBalance(@PathVariable("id") int id,
                              @PathVariable("value") double value,
                              @RequestHeader(value = "Authorization", required = true) String token) {
-//        if (tokenUtils.validateToken(token)) {
-            return balanceService.setBalance(id, value, tokenUtils.getPayload(token).getSub());
-//        } else {
-//            return "Please log in again";
-//        }
+        return balanceService.setBalance(id, value, tokenUtils.getPayload(token).getSub());
     }
 }

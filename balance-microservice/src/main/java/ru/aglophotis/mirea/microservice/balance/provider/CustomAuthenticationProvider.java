@@ -4,6 +4,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,10 +15,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
-        String name = authentication.getName();
-        String password = authentication.getCredentials().toString();
-        return new UsernamePasswordAuthenticationToken(
-                    name, password, new ArrayList<>());
+        String username = authentication.getPrincipal() + "";
+        String password = authentication.getCredentials() + "";
+        ArrayList<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(username, password, authorities);
     }
 
     @Override

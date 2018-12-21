@@ -48,15 +48,10 @@ public class UserService {
         }
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (bCryptPasswordEncoder.matches(user.getPassword(), userDb.getPassword())) {
-            if (userDb.getRole().equals("ROLE_USER")) {
-                return userDb.getId() + ":user";
-            } else if (userDb.getRole().equals("ROLE_ADMIN")) {
-                return userDb.getId() + ":admin";
-            }
+            return userDb.getId() + ":" + userDb.getRole();
         } else {
             return "Incorrect password";
         }
-        return null;
     }
 
     public User getUserByLogin(String username) {
