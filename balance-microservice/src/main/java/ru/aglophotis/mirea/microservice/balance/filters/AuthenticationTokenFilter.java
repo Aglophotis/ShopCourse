@@ -43,7 +43,7 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
         String authToken = httpRequest.getHeader(this.tokenHeader);
         Payload payload = tokenUtils.getPayload(authToken);
 
-        if (payload.getName() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (payload != null && payload.getName() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(payload.getName());
             if (this.tokenUtils.validateToken(authToken)) {
                 UsernamePasswordAuthenticationToken authReq
