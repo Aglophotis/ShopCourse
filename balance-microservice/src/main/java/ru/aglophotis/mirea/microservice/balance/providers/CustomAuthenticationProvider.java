@@ -1,4 +1,4 @@
-package ru.aglophotis.mirea.microservice.balance.provider;
+package ru.aglophotis.mirea.microservice.balance.providers;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

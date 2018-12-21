@@ -184,7 +184,7 @@ public class CartService {
                         + currencyId
                         + "/balance/"
                         + value,
-                HttpMethod.POST,
+                HttpMethod.DELETE,
                 httpEntity,
                 new ParameterizedTypeReference<String>(){});
     }

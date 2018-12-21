@@ -1,4 +1,4 @@
-package ru.aglophotis.mirea.microservice.balance.Configuration;
+package ru.aglophotis.mirea.microservice.balance.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.aglophotis.mirea.microservice.balance.filters.AuthenticationTokenFilter;
-import ru.aglophotis.mirea.microservice.balance.provider.CustomAuthenticationProvider;
+import ru.aglophotis.mirea.microservice.balance.providers.CustomAuthenticationProvider;
 import ru.aglophotis.mirea.microservice.balance.utils.CustomAuthenticationEntryPoint;
 
 import java.util.Arrays;
@@ -59,9 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/balance").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.POST, "/currency/*/balance/*").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/currency/*/balance/*").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.PUT, "/currency/*/balance/*").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/currency/*/balance/*").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/currency/*/balance/*").hasRole("ADMIN")
                 .anyRequest().authenticated();
         httpSecurity
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
