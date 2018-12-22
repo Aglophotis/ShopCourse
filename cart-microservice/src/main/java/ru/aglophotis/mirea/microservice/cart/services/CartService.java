@@ -1,5 +1,6 @@
 package ru.aglophotis.mirea.microservice.cart.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -8,19 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.aglophotis.mirea.microservice.cart.dao.CartDao;
-import ru.aglophotis.mirea.microservice.cart.entities.Balance;
-import ru.aglophotis.mirea.microservice.cart.entities.CartItem;
-import ru.aglophotis.mirea.microservice.cart.entities.Currency;
-import ru.aglophotis.mirea.microservice.cart.entities.Item;
+import ru.aglophotis.mirea.microservice.cart.entities.*;
 
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class CartService {
 
     private CartDao cartApi;
+
+    @Autowired
+    private PortsConfiguration portsConfiguration;
 
     public CartService() {
         cartApi = new CartDao();
@@ -119,42 +118,23 @@ public class CartService {
         return "The payment has been successfully completed";
     }
 
-    public String checkToken(String token) {
-        String decodedToken = decodeToken(token);
-        String[] parseToken = decodedToken.split(":");
-        Long timeLive = Long.parseLong(parseToken[5]);
-        if (timeLive < new Date().getTime()) {
-            return "Incorrect";
-        } else {
-            RestTemplate restTemplate = new RestTemplate();
-            HttpEntity<String> request = new HttpEntity<>(token);
-            ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8083/token", request, String.class);
-            if (response.getBody().equals("Incorrect token")) {
-                return "Incorrect";
-            } else {
-                return parseToken[2];
-            }
-        }
-    }
-
-    private String decodeToken(String token) {
-        String decodedToken = new String(Base64.getDecoder().decode(token));
-        return decodedToken;
-    }
-
     private Item getItemById(int id) {
         RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl
-                = "http://localhost:8085/item/" + id;
-        ResponseEntity<Item> response
-                = restTemplate.getForEntity(fooResourceUrl, Item.class);
+        ResponseEntity<Item> response = restTemplate.getForEntity(
+                "http://localhost:" +
+                        portsConfiguration.getPort("item") +
+                        "/item/" +
+                        id,
+                Item.class);
         return response.getBody();
     }
 
     private List<Currency> getCurrencies() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<Currency>> response = restTemplate.exchange(
-                "http://localhost:8080/currency",
+                "http://localhost:" +
+                        portsConfiguration.getPort("currency") +
+                        "/currency",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Currency>>(){});
@@ -167,7 +147,9 @@ public class CartService {
         httpHeaders.add("Authorization", token);
         HttpEntity httpEntity = new HttpEntity(httpHeaders);
         ResponseEntity<List<Balance>> response = restTemplate.exchange(
-                "http://localhost:8095/balance",
+                "http://localhost:" +
+                        portsConfiguration.getPort("balance") +
+                        "/balance",
                 HttpMethod.GET,
                 httpEntity,
                 new ParameterizedTypeReference<List<Balance>>(){});
@@ -180,10 +162,12 @@ public class CartService {
         httpHeaders.add("Authorization", token);
         HttpEntity httpEntity = new HttpEntity(httpHeaders);
         ResponseEntity<String> response = restTemplate.exchange(
-                "http://localhost:8095/currency/"
-                        + currencyId
-                        + "/balance/"
-                        + value,
+                "http://localhost:" +
+                        portsConfiguration.getPort("balance") +
+                        "/currency/" +
+                        currencyId +
+                        "/balance/" +
+                        value,
                 HttpMethod.POST,
                 httpEntity,
                 new ParameterizedTypeReference<String>(){});
@@ -192,10 +176,12 @@ public class CartService {
     private void updateItemsCount(int id, int value) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> tmpResponse = restTemplate.exchange(
-                "http://localhost:8085/item/"
-                        + id
-                        + "/"
-                        + value,
+                "http://localhost:" +
+                        portsConfiguration.getPort("item") +
+                        "/item/" +
+                        id +
+                        "/" +
+                        value,
                 HttpMethod.POST,
                 null,
                 new ParameterizedTypeReference<String>(){});

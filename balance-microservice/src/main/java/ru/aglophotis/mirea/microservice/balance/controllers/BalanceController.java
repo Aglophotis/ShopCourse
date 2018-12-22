@@ -26,7 +26,7 @@ public class BalanceController {
         return balanceService.getBalance(tokenUtils.getPayload(token).getSub());
     }
 
-    @RequestMapping(value = "/balance", method = RequestMethod.POST)
+    @RequestMapping(value = "/wallet", method = RequestMethod.POST)
     @ResponseBody
     public String createWallet(@RequestBody Integer id) {
         return balanceService.createWallet(id);

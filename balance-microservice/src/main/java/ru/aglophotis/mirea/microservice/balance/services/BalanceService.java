@@ -1,5 +1,6 @@
 package ru.aglophotis.mirea.microservice.balance.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.aglophotis.mirea.microservice.balance.dao.BalanceDao;
 import ru.aglophotis.mirea.microservice.balance.entities.Balance;
 import ru.aglophotis.mirea.microservice.balance.entities.Currency;
+import ru.aglophotis.mirea.microservice.balance.entities.PortsConfiguration;
 
 import java.util.List;
 
@@ -15,6 +17,9 @@ import java.util.List;
 public class BalanceService {
 
     private BalanceDao balanceDao;
+
+    @Autowired
+    private PortsConfiguration portsConfiguration;
 
     public BalanceService() {
         balanceDao = new BalanceDao();
@@ -35,7 +40,9 @@ public class BalanceService {
     public String createWallet(int id) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<Currency>> responseCurrencies = restTemplate.exchange(
-                "http://localhost:8080/currency",
+                "http://localhost:" +
+                        portsConfiguration.getPort("currency") +
+                        "/currency",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Currency>>(){});
@@ -49,15 +56,6 @@ public class BalanceService {
     }
 
     public String increaseBalance(int idCurrency, double value, int authorId) {
-        RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl
-                = "http://localhost:8080/currency/" + idCurrency;
-        ResponseEntity<Currency> response
-                = restTemplate.getForEntity(fooResourceUrl, Currency.class);
-        Currency currency = response.getBody();
-        if (currency == null) {
-            return "Error: connection problems";
-        }
         Balance balance = balanceDao.getByCurrencyId(idCurrency, authorId);
         if (balance == null) {
             return "Error: connection problems";
@@ -68,15 +66,6 @@ public class BalanceService {
     }
 
     public String decreaseBalance(int idCurrency, double value, int authorId) {
-        RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl
-                = "http://localhost:8080/currency/" + idCurrency;
-        ResponseEntity<Currency> response
-                = restTemplate.getForEntity(fooResourceUrl, Currency.class);
-        Currency currency = response.getBody();
-        if (currency == null) {
-            return "Error: connection problems";
-        }
         Balance balance = balanceDao.getByCurrencyId(idCurrency, authorId);
         if (balance == null) {
             return "Error: connection problems";

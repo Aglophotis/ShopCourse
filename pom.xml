@@ -13,5 +13,6 @@
         <module>router-microservice</module>
         <module>identity</module>
         <module>authorization</module>
+        <module>configuration</module>
     </modules>
 </project>

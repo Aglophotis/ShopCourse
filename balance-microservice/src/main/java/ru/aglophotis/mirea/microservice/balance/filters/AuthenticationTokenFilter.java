@@ -41,20 +41,20 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String authToken = httpRequest.getHeader(this.tokenHeader);
-        Payload payload = tokenUtils.getPayload(authToken);
-
-        if (payload != null && payload.getName() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(payload.getName());
-            if (this.tokenUtils.validateToken(authToken)) {
-                UsernamePasswordAuthenticationToken authReq
-                        = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
-                Authentication auth = getAuthenticationManager().authenticate(authReq);
-                SecurityContextHolder.getContext().setAuthentication(auth);
+        if (authToken != null) {
+            Payload payload = tokenUtils.getPayload(authToken);
+            if (payload != null && payload.getName() != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(payload.getName());
+                if (this.tokenUtils.validateToken(authToken)) {
+                    UsernamePasswordAuthenticationToken authReq
+                            = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+                    Authentication auth = getAuthenticationManager().authenticate(authReq);
+                    SecurityContextHolder.getContext().setAuthentication(auth);
 //                System.out.println(auth.getAuthorities().iterator().next());
 //                System.out.println(auth.isAuthenticated());
+                }
             }
         }
-
         chain.doFilter(request, response);
     }
 }

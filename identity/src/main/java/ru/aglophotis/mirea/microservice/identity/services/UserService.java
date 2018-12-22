@@ -1,18 +1,23 @@
 package ru.aglophotis.mirea.microservice.identity.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.aglophotis.mirea.microservice.identity.dao.UserDao;
+import ru.aglophotis.mirea.microservice.identity.entities.PortsConfiguration;
 import ru.aglophotis.mirea.microservice.identity.entities.User;
 
 import java.util.List;
 
 @Service
 public class UserService {
+
     private UserDao userDao;
+
+    @Autowired
+    private PortsConfiguration portsConfiguration;
 
     public UserService() {
         userDao = new UserDao();
@@ -37,7 +42,9 @@ public class UserService {
         }
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Integer> request = new HttpEntity<>(id);
-        ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:8095/balance", request, String.class);
+        restTemplate.postForEntity("http://localhost:" +
+                portsConfiguration.getPort("balance") +
+                "/wallet", request, String.class);
         return id;
     }
 
