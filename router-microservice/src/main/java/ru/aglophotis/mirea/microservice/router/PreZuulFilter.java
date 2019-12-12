@@ -2,6 +2,7 @@ package ru.aglophotis.mirea.microservice.router;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.netflix.zuul.http.HttpServletRequestWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -29,6 +30,7 @@ public class PreZuulFilter extends ZuulFilter {
         System.out.println("URL: " + request.getRequestURI());
         System.out.println("Method: " + request.getMethod());
         System.out.println("Resuest: " + new Date());
+        System.out.println("Headers: " + request.getHeader("Content-Type"));
         return null;
     }
 }

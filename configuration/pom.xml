@@ -20,7 +20,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>ru.aglophotis.mirea.microservice.configuration.CustomApplication</mainClass>
+                    <mainClass>ru.aglophotis.mirea.microservice.configuration.ConfigurationApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

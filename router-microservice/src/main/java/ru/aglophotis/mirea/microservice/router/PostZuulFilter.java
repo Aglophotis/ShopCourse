@@ -1,6 +1,7 @@
 package ru.aglophotis.mirea.microservice.router;
 
 import com.google.common.io.CharStreams;
+import com.netflix.ribbon.proxy.annotation.Http;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 
@@ -37,6 +38,14 @@ public class PostZuulFilter extends ZuulFilter {
             e.printStackTrace();
         }
         System.out.println("---------------------------------------------------------------------");
+        if (context.getRequest().getMethod().equals(Http.HttpMethod.POST.toString())) {
+            response.setHeader("Access-Control-Allow-Origin", context.getRequest().getHeader("Origin"));
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+            response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, HEAD, PATCH, PUT");
+            response.setHeader("Access-Control-Max-Age", "3600");
+            response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+            context.setResponse(response);
+        }
         return null;
     }
 }
