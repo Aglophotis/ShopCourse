@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> request = new HttpEntity<>(username);
         ResponseEntity<UserInfo> response
-                = restTemplate.postForEntity("http://localhost:8083/getUser", request, UserInfo.class);
+                = restTemplate.postForEntity("http://172.17.0.1:8083/getUser", request, UserInfo.class);
         return response.getBody();
     }
 }

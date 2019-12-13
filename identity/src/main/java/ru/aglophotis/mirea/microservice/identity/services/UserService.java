@@ -40,11 +40,6 @@ public class UserService {
         if (id == -1) {
             return id;
         }
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<Integer> request = new HttpEntity<>(id);
-        restTemplate.postForEntity("http://localhost:" +
-                portsConfiguration.getPort("balance") +
-                "/wallet", request, String.class);
         return id;
     }
 

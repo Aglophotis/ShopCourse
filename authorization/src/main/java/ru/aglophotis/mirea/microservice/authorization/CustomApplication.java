@@ -25,12 +25,13 @@ public class CustomApplication {
 
     @PostConstruct
     private void init() {
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<HashMap<String, String>> response = restTemplate.exchange(
-                "http://localhost:8088/config",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<HashMap<String, String>>() {});
-        portsConfiguration.setMapPorts(response.getBody());
+        HashMap<String, String> portsMap = new HashMap<>();
+        portsMap.put("item", "8085");
+        portsMap.put("balance", "8095");
+        portsMap.put("cart", "8081");
+        portsMap.put("currency", "8080");
+        portsMap.put("identity", "8083");
+        portsMap.put("authorization", "8086");
+        portsConfiguration.setMapPorts(portsMap);
     }
 }

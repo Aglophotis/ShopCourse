@@ -1,0 +1,46 @@
+version: '3'
+
+networks:
+  custom-net:
+    driver: bridge
+
+services:
+  identity-service:
+    build:
+      context: .
+      dockerfile: identity/Dockerfile
+    volumes:
+      - ./identity:/identity
+    ports:
+      - "8083:8083"
+    networks:
+      - custom-net
+
+  authorization-service:
+    build:
+      context: .
+      dockerfile: authorization/Dockerfile
+    volumes:
+      - ./authorization:/authorization
+    ports:
+      - "8086:8086"
+    networks:
+      - custom-net
+
+  router-service:
+    build:
+      context: .
+      dockerfile: router-microservice/Dockerfile
+    volumes:
+      - ./router-microservice:/router
+    ports:
+      - "8111:8111"
+
+  item-service:
+    build:
+      context: .
+      dockerfile: item-microservice/Dockerfile
+    volumes:
+      - ./item-microservice:/item
+    ports:
+      - "8085:8085"

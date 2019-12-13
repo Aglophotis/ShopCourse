@@ -22,7 +22,7 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.PUT, consumes = {"application/json"})
     @ResponseBody
-    public String addUsers(@RequestBody User user) {
+    public String addUser(@RequestBody User user) {
         if (userService.addUser(user) != -1) {
             return "User successfully added";
         } else {

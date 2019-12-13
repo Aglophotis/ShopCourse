@@ -22,7 +22,7 @@ public class AuthorizationService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<User> request = new HttpEntity<>(user, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:" +
+        ResponseEntity<String> response = restTemplate.postForEntity("http://172.17.0.1:" +
                 portsConfiguration.getPort("identity") +
                 "/user", request, String.class);
         if (response == null) {
